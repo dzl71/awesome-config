@@ -6,7 +6,7 @@ local gears = require("gears")
 -- ======================
 
 ---@type string
-local keyboard_layouts = { "us", "il", "ru"}
+local keyboard_layouts = { "us", "il", "ru" }
 
 ---@type integer
 local default_master_count = 1
@@ -163,7 +163,7 @@ keys.global = gears.table.join(
 
 	-- change keyboard layout
 	awful.key(
-		{ "Control", "Shift" },
+		{ modkey, "Shift" },
 		"BackSpace",
 		function()
 			keyboard_layout_current = keyboard_layout_current + 1
@@ -245,11 +245,11 @@ keys.global = gears.table.join(
 	),
 
 	-- set the number of master windows to default
-	
+
 	awful.key(
-		{modkey},
+		{ modkey },
 		"`",
-		function ()
+		function()
 			awful.screen.focused().selected_tag.master_count = default_master_count
 		end
 	)
