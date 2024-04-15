@@ -163,7 +163,7 @@ keys.global = gears.table.join(
 
 	-- change keyboard layout
 	awful.key(
-		{ modkey, "Shift" },
+		{ "Control", "Shift" },
 		"BackSpace",
 		function()
 			keyboard_layout_current = keyboard_layout_current + 1
