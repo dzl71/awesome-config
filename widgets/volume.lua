@@ -7,14 +7,13 @@ local wibox = require "wibox"
 -- =================================
 
 ---@type string
-local command = [[bash -c "nice pamixer --get-volume --get-mute"]]
+local command = [[bash -c "nice pamixer --get-volume --get-mute ; nice pamixer --list-sinks | grep -o bluez"]]
 
 ---@type number
-local timeout = 3600
+local timeout = 3
 
 ---@type table
 local volume_icons = {
-
 	'󰕿',
 	'󰖀',
 	'󰕾',
@@ -23,6 +22,9 @@ local volume_icons = {
 
 ---@type string
 local mute_icon = "󰸈"
+
+---@type string
+local bluetooth_icon = " "
 
 ---@type string
 local not_mute = "false"
@@ -45,11 +47,15 @@ return function(color, margin_left, margin_right)
 				utils.set_bg(volume_widget, crit_color)
 				return
 			end
+			local sub_icon = '' ---@type string
+			if string.match(stdout, "bluez") then
+				sub_icon = bluetooth_icon
+			end
 			local volume = tonumber(string.match(stdout, "%d+")) ---@type integer?
 			local status = string.match(stdout, "%a+") ---@type string
-			local icon = mute_icon ---@type string
+			local icon = sub_icon .. mute_icon ---@type string
 			if status == not_mute then
-				icon = volume_icons[math.ceil(volume / 33)]
+				icon = sub_icon .. volume_icons[math.ceil(volume / 33)]
 			end
 			utils.set_text(volume_widget, wibox.widget.textbox(icon .. " " .. volume .. '% '))
 		end,
