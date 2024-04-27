@@ -16,7 +16,7 @@ local tags_num = 4
 local even_color = "#8a2be2"
 
 ---@type string
-local odd_idx = "#7b68ee"
+local odd_color = "#7b68ee"
 
 ---@type number
 local left_margin = 10
@@ -57,12 +57,12 @@ local function set_wallpaper(s)
 	end
 end
 
--- ===========================
---     defining widgets
--- ===========================
+-- ======================================
+--     defining small widgets presets
+-- ======================================
 
 ---@type table
-local keyboardLayout = wibox.widget {
+local KeyboardLayout = wibox.widget {
 	widget = wibox.container.background,
 	{
 		layout = wibox.layout.fixed.horizontal,
@@ -74,22 +74,63 @@ local keyboardLayout = wibox.widget {
 		awful.widget.keyboardlayout:new(),
 	}
 }
-local clock = wibox.widget {
+local Date = wibox.widget {
 	widget = wibox.container.background,
-	awful.widget.textclock("󰃱  %d-%m-%Y %a |   %T ", 1)
+	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 1)
 }
 
--- =====================================
---		setup widgets
--- =====================================
+local Time = wibox.widget {
+	widget = wibox.container.background,
+	awful.widget.textclock("  %T ", 1)
+}
 
-local wifi = require "widgets.wifi" (odd_idx, left_margin, right_margin)
-local temperature = require "widgets.temperature" (even_color, left_margin, right_margin)
-local ram = require "widgets.ram" (odd_idx, left_margin, right_margin)
-local cpu = require "widgets.cpu" (even_color, left_margin, right_margin)
-local volume = require "widgets.volume" (odd_idx, left_margin, right_margin)
-local brightness = require "widgets.brightness" (even_color, left_margin, right_margin)
-local battery = require "widgets.battery" (odd_idx, left_margin, right_margin)
+-- ====================================
+--		setup widget initializers
+-- ====================================
+
+local wifi_init = require "widgets.wifi"
+local temperature_init = require "widgets.temperature"
+local ram_init = require "widgets.ram"
+local cpu_init = require "widgets.cpu"
+local volume_init = require "widgets.volume"
+local brightness_init = require "widgets.brightness"
+local battery_init = require "widgets.battery"
+
+-- ====================================
+--	   setup always visible widgets
+-- ====================================
+
+
+local tag_container = function(screen)
+	return theme(
+		wibox.widget {
+			widget = wibox.container.background,
+			screen.mytaglist
+		},
+		even_color,
+		10
+	)
+end
+local wifi = wifi_init(odd_color, left_margin, right_margin)
+local temperature = temperature_init(even_color, left_margin, right_margin)
+local ram = ram_init(odd_color, left_margin, right_margin)
+local cpu = cpu_init(even_color, left_margin, right_margin)
+local volume = volume_init(odd_color, left_margin, right_margin)
+local brightness = brightness_init(even_color, left_margin, right_margin)
+local battery = battery_init(odd_color, left_margin, right_margin)
+local keyboard_layout = theme(KeyboardLayout, even_color, right_margin)
+local date = theme(Date, odd_color, right_margin)
+local time = theme(Time, even_color, right_margin)
+local layout_box = function(screen)
+	return theme(
+		wibox.widget {
+			widget = wibox.container.background,
+			screen.mylayoutbox,
+		},
+		odd_color,
+		15
+	)
+end
 
 -- ====================================
 --    collect manual widget updaters
@@ -158,14 +199,7 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Left widgets
 		{
 			layout = fixed_horizontal,
-			theme(
-				wibox.widget {
-					widget = wibox.container.background,
-					s.mytaglist
-				},
-				even_color,
-				10
-			),
+			tag_container(s),
 			wibox.widget.textbox(" "),
 			wibox.widget.systray(),
 		},
@@ -182,16 +216,10 @@ awful.screen.connect_for_each_screen(function(s)
 			volume.widget,
 			brightness.widget,
 			battery,
-			theme(keyboardLayout, even_color, right_margin),
-			theme(clock, odd_idx, right_margin),
-			theme(
-				wibox.widget {
-					widget = wibox.container.background,
-					s.mylayoutbox,
-				},
-				even_color,
-				15
-			),
+			keyboard_layout,
+			date,
+			time,
+			layout_box(s),
 		},
 	})
 end)
