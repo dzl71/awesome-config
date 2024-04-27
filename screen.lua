@@ -13,7 +13,7 @@ local fixed_horizontal = wibox.layout.fixed.horizontal
 local tags_num = 4
 
 ---@type string
-local even_idx = "#8a2be2"
+local even_color = "#8a2be2"
 
 ---@type string
 local odd_idx = "#7b68ee"
@@ -76,7 +76,7 @@ local keyboardLayout = wibox.widget {
 }
 local clock = wibox.widget {
 	widget = wibox.container.background,
-	awful.widget.textclock("  %d-%m-%Y %a %T ", 1)
+	awful.widget.textclock("󰃱  %d-%m-%Y %a   %T ", 1)
 }
 
 -- =====================================
@@ -84,11 +84,11 @@ local clock = wibox.widget {
 -- =====================================
 
 local wifi = require "widgets.wifi" (odd_idx, left_margin, right_margin)
-local temperature = require "widgets.temperature" (even_idx, left_margin, right_margin)
+local temperature = require "widgets.temperature" (even_color, left_margin, right_margin)
 local ram = require "widgets.ram" (odd_idx, left_margin, right_margin)
-local cpu = require "widgets.cpu" (even_idx, left_margin, right_margin)
+local cpu = require "widgets.cpu" (even_color, left_margin, right_margin)
 local volume = require "widgets.volume" (odd_idx, left_margin, right_margin)
-local brightness = require "widgets.brightness" (even_idx, left_margin, right_margin)
+local brightness = require "widgets.brightness" (even_color, left_margin, right_margin)
 local battery = require "widgets.battery" (odd_idx, left_margin, right_margin)
 
 -- ====================================
@@ -163,7 +163,7 @@ awful.screen.connect_for_each_screen(function(s)
 					widget = wibox.container.background,
 					s.mytaglist
 				},
-				even_idx,
+				even_color,
 				10
 			),
 			wibox.widget.textbox(" "),
@@ -182,14 +182,14 @@ awful.screen.connect_for_each_screen(function(s)
 			volume.widget,
 			brightness.widget,
 			battery,
-			theme(keyboardLayout, even_idx, right_margin),
+			theme(keyboardLayout, even_color, right_margin),
 			theme(clock, odd_idx, right_margin),
 			theme(
 				wibox.widget {
 					widget = wibox.container.background,
 					s.mylayoutbox,
 				},
-				even_idx,
+				even_color,
 				15
 			),
 		},
