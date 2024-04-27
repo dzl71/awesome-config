@@ -76,7 +76,7 @@ local keyboardLayout = wibox.widget {
 }
 local clock = wibox.widget {
 	widget = wibox.container.background,
-	awful.widget.textclock("󰃱  %d-%m-%Y %a   %T ", 1)
+	awful.widget.textclock("󰃱  %d-%m-%Y %a |   %T ", 1)
 }
 
 -- =====================================
