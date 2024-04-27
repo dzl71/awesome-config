@@ -8,7 +8,7 @@ local naughty = require("naughty")
 -- =============================
 
 ---@type string
-local command = [[bash -c "nice free | grep Mem | awk '{print $3 / $2 * 100}'"]]
+local command = [[bash -c "nice free | awk '{total += $2} {used += $3} END {print used / total * 100}'"]]
 
 ---@type number
 local timeout = 3
