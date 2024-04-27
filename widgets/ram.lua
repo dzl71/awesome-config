@@ -14,7 +14,7 @@ local command = [[bash -c "nice free | grep Mem | awk '{print $3 / $2 * 100}'"]]
 local timeout = 3
 
 ---@type string
-local icon = ""
+local icon = " "
 
 ---@type integer
 local crit_threshold = 85
