@@ -140,15 +140,16 @@ keys.global = gears.table.join(
 			local grabber
 			grabber = awful.keygrabber.run(function(mod, key, event)
 				if event == 'release' then return end
-				local resize_val = 0.05 ---@type number
+				local vert_resize_val = 0.05 ---@type number
+				local hor_resize_val = 0.025 ---@type number
 				if key == 'k' then
-					awful.client.incwfact(resize_val) -- direction up
+					awful.client.incwfact(vert_resize_val) -- direction up
 				elseif key == 'j' then
-					awful.client.incwfact(-resize_val) -- direction down
+					awful.client.incwfact(-vert_resize_val) -- direction down
 				elseif key == 'h' then
-					awful.tag.incmwfact(-resize_val) -- direction left
+					awful.tag.incmwfact(-hor_resize_val) -- direction left
 				elseif key == 'l' then
-					awful.tag.incmwfact(resize_val) -- direction right
+					awful.tag.incmwfact(hor_resize_val) -- direction right
 				else
 					awful.keygrabber.stop(grabber)
 				end
@@ -311,7 +312,6 @@ keys.client = gears.table.join(
 		end,
 		{ description = "focus to left client", group = "client" } -- data
 	),
-
 	awful.key(
 		{ modkey }, -- modification keys
 		"j",  -- key
