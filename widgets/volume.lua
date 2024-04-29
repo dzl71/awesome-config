@@ -55,7 +55,11 @@ return function(color, margin_left, margin_right)
 			local status = string.match(stdout, "%a+") ---@type string
 			local icon = sub_icon .. mute_icon ---@type string
 			if status == not_mute then
-				icon = sub_icon .. volume_icons[math.ceil(volume / 33)]
+				local icon_idx = math.ceil(volume / 33)
+				if icon_idx < 1 then
+					icon_idx = 1
+				end
+				icon = sub_icon .. volume_icons[icon_idx]
 			end
 			utils.set_text(volume_widget, wibox.widget.textbox(icon .. " " .. volume .. '% '))
 		end,
