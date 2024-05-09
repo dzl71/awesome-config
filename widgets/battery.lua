@@ -72,7 +72,7 @@ return function(color, left_margin, right_margin)
 			local icon = "" ---@type string
 			if stderr:len() > 0 then
 				icon = percentage_icons[1]
-				utils.set_text(battery, wibox.widget.textbox(' ' .. icon .. ' unavailable '))
+				utils.set_widget(battery, wibox.widget.textbox(' ' .. icon .. ' unavailable '))
 				utils.set_bg(battery, crit_color)
 				notify("unable to connect to battery")
 				return
@@ -90,7 +90,7 @@ return function(color, left_margin, right_margin)
 			else
 				notified = false
 			end
-			utils.set_text(battery, wibox.widget.textbox(icon .. ' ' .. charge .. '% '))
+			utils.set_widget(battery, wibox.widget.textbox(icon .. ' ' .. charge .. '% '))
 		end,
 		utils.widget_base(color, left_margin, right_margin, 200)
 	)

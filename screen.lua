@@ -13,10 +13,10 @@ local fixed_horizontal = wibox.layout.fixed.horizontal
 local tags_num = 4
 
 ---@type string
-local even_color = "#8a2be2"
+local color_odd = "#8a2be2"
 
 ---@type string
-local odd_color = "#7b68ee"
+local color_even = "#7b68ee"
 
 ---@type number
 local left_margin = 10
@@ -88,6 +88,7 @@ local time_preset = wibox.widget {
 --		setup widget initializers
 -- ====================================
 
+local taglist_init = require("widgets.taglist")
 local wifi_init = require("widgets.wifi")
 local temperature_init = require("widgets.temperature")
 local ram_init = require("widgets.ram")
@@ -100,34 +101,54 @@ local battery_init = require("widgets.battery")
 --	   setup always visible widgets
 -- ====================================
 
-local tag_container = function(screen)
-	return theme(
-		wibox.widget {
-			widget = wibox.container.background,
-			screen.mytaglist
-		},
-		even_color,
-		10
-	)
+-- local taglist = function(screen)
+-- 	return theme(
+-- 		taglist_init(screen),
+-- 		even_color,
+-- 		12
+-- 	)
+-- end
+local taglist = function(screen)
+	return taglist_init(screen, color_odd, 10, 10)
 end
-local wifi = wifi_init(odd_color, left_margin, right_margin)
-local temperature = temperature_init(even_color, left_margin, right_margin)
-local ram = ram_init(odd_color, left_margin, right_margin)
-local cpu = cpu_init(even_color, left_margin, right_margin)
-local volume = volume_init(odd_color, left_margin, right_margin)
-local brightness = brightness_init(even_color, left_margin, right_margin)
-local battery = battery_init(odd_color, left_margin, right_margin)
-local keyboard_layout = theme(keyboard_preset, even_color, right_margin)
-local date = theme(date_preset, odd_color, right_margin)
-local time = theme(time_preset, even_color, right_margin)
+local wifi = wifi_init(
+	color_even, left_margin, right_margin
+)
+local temperature = temperature_init(
+	color_odd, left_margin, right_margin
+)
+local ram = ram_init(
+	color_even, left_margin, right_margin
+)
+local cpu = cpu_init(
+	color_odd, left_margin, right_margin
+)
+local volume = volume_init(
+	color_even, left_margin, right_margin
+)
+local brightness = brightness_init(
+	color_odd, left_margin, right_margin
+)
+local battery = battery_init(
+	color_even, left_margin, right_margin
+)
+local keyboard_layout = theme(
+	keyboard_preset, color_odd, right_margin
+)
+local date = theme(
+	date_preset, color_even, right_margin
+)
+local time = theme(
+	time_preset, color_odd, right_margin
+)
 local layout_box = function(screen)
 	return theme(
 		wibox.widget {
 			widget = wibox.container.background,
-			screen.mylayoutbox,
+			awful.widget.layoutbox(screen),
 		},
-		odd_color,
-		15
+		color_even,
+		10
 	)
 end
 
@@ -168,15 +189,7 @@ awful.screen.connect_for_each_screen(function(s)
 
 
 	-- Create a promptbox for each screen
-	s.mypromptbox = awful.widget.prompt()
-	-- Create an imagebox widget which will contain an icon indicating which layout we're using.
-	-- We need one layoutbox per screen.
-	s.mylayoutbox = awful.widget.layoutbox(s)
-	-- Create a taglist widget
-	s.mytaglist = awful.widget.taglist {
-		screen = s,
-		filter = awful.widget.taglist.filter.all,
-	}
+	-- s.mypromptbox = awful.widget.prompt()
 
 	-- ============================
 	--		defining the bar
@@ -198,7 +211,7 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Left widgets
 		{
 			layout = fixed_horizontal,
-			tag_container(s),
+			taglist(s),
 			wibox.widget.textbox(" "),
 			wibox.widget.systray(),
 		},

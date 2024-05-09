@@ -28,8 +28,8 @@ function utils.set_bg(widget, color)
 	widget.widget.bg = color
 end
 
-function utils.set_text(widget, text)
-	widget.widget.widget.widget = text
+function utils.set_widget(parent_widget, child_widget)
+	parent_widget.widget.widget.widget = child_widget
 end
 
 return utils

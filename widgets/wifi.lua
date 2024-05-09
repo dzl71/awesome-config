@@ -45,7 +45,7 @@ return function(color, left_margin, right_margin)
 				signal = 0
 				utils.set_bg(wifi, crit_color)
 			end
-			utils.set_text(wifi, wibox.widget.textbox(icon .. signal .. "% "))
+			utils.set_widget(wifi, wibox.widget.textbox(icon .. signal .. "% "))
 		end,
 		utils.widget_base(color, left_margin, right_margin)
 	)
