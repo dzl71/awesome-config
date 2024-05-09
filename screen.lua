@@ -62,7 +62,7 @@ end
 -- ======================================
 
 ---@type table
-local KeyboardLayout = wibox.widget {
+local keyboard_preset = wibox.widget {
 	widget = wibox.container.background,
 	{
 		layout = wibox.layout.fixed.horizontal,
@@ -74,12 +74,12 @@ local KeyboardLayout = wibox.widget {
 		awful.widget.keyboardlayout:new(),
 	}
 }
-local Date = wibox.widget {
+local date_preset = wibox.widget {
 	widget = wibox.container.background,
 	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 1)
 }
 
-local Time = wibox.widget {
+local time_preset = wibox.widget {
 	widget = wibox.container.background,
 	awful.widget.textclock("  %T ", 1)
 }
@@ -88,18 +88,17 @@ local Time = wibox.widget {
 --		setup widget initializers
 -- ====================================
 
-local wifi_init = require "widgets.wifi"
-local temperature_init = require "widgets.temperature"
-local ram_init = require "widgets.ram"
-local cpu_init = require "widgets.cpu"
-local volume_init = require "widgets.volume"
-local brightness_init = require "widgets.brightness"
-local battery_init = require "widgets.battery"
+local wifi_init = require("widgets.wifi")
+local temperature_init = require("widgets.temperature")
+local ram_init = require("widgets.ram")
+local cpu_init = require("widgets.cpu")
+local volume_init = require("widgets.volume")
+local brightness_init = require("widgets.brightness")
+local battery_init = require("widgets.battery")
 
 -- ====================================
 --	   setup always visible widgets
 -- ====================================
-
 
 local tag_container = function(screen)
 	return theme(
@@ -118,9 +117,9 @@ local cpu = cpu_init(even_color, left_margin, right_margin)
 local volume = volume_init(odd_color, left_margin, right_margin)
 local brightness = brightness_init(even_color, left_margin, right_margin)
 local battery = battery_init(odd_color, left_margin, right_margin)
-local keyboard_layout = theme(KeyboardLayout, even_color, right_margin)
-local date = theme(Date, odd_color, right_margin)
-local time = theme(Time, even_color, right_margin)
+local keyboard_layout = theme(keyboard_preset, even_color, right_margin)
+local date = theme(date_preset, odd_color, right_margin)
+local time = theme(time_preset, even_color, right_margin)
 local layout_box = function(screen)
 	return theme(
 		wibox.widget {
@@ -132,9 +131,9 @@ local layout_box = function(screen)
 	)
 end
 
--- ====================================
---    collect manual widget updaters
--- ====================================
+-- =============================
+--    collect widget updaters
+-- =============================
 
 local widget_updaters = {
 	volume_updater = volume.updater,
