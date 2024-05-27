@@ -109,37 +109,62 @@ local battery_init = require("widgets.battery")
 -- 	)
 -- end
 local taglist = function(screen)
-	return taglist_init(screen, color_odd, 10, 10)
+	return taglist_init(
+		screen,
+		color_odd,
+		10,
+		10
+	)
 end
 local wifi = wifi_init(
-	color_even, left_margin, right_margin
+	color_even,
+	left_margin,
+	right_margin
 )
 local temperature = temperature_init(
-	color_odd, left_margin, right_margin
+	color_odd,
+	left_margin,
+	right_margin
 )
 local ram = ram_init(
-	color_even, left_margin, right_margin
+	color_even,
+	left_margin,
+	right_margin
 )
 local cpu = cpu_init(
-	color_odd, left_margin, right_margin
+	color_odd,
+	left_margin,
+	right_margin
 )
 local volume = volume_init(
-	color_even, left_margin, right_margin
+	color_even,
+	left_margin,
+	right_margin
 )
 local brightness = brightness_init(
-	color_odd, left_margin, right_margin
+	color_odd,
+	left_margin,
+	right_margin
 )
 local battery = battery_init(
-	color_even, left_margin, right_margin
+	color_even,
+	left_margin,
+	right_margin
 )
 local keyboard_layout = theme(
-	keyboard_preset, color_odd, right_margin
+	keyboard_preset,
+	color_odd,
+	right_margin
 )
 local date = theme(
-	date_preset, color_even, right_margin
+	date_preset,
+	color_even,
+	right_margin
 )
 local time = theme(
-	time_preset, color_odd, right_margin
+	time_preset,
+	color_odd,
+	right_margin
 )
 local layout_box = function(screen)
 	return theme(
