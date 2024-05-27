@@ -101,13 +101,6 @@ local battery_init = require("widgets.battery")
 --	   setup always visible widgets
 -- ====================================
 
--- local taglist = function(screen)
--- 	return theme(
--- 		taglist_init(screen),
--- 		even_color,
--- 		12
--- 	)
--- end
 local taglist = function(screen)
 	return taglist_init(
 		screen,
