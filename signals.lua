@@ -39,12 +39,6 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 --     change tag name (dependts on if tagged)
 -- ==============================================
 
--- ---@type string
--- local inactive_tag_name = ''
-
--- ---@type string
--- local active_tag_name = ''
-
 tag.connect_signal("tagged", function(tag)
 	tag.icon = string.format("%s/icons/numeric-%d-circle.svg", config_dir, tag.index)
 end)
