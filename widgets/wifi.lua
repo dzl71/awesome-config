@@ -10,7 +10,7 @@ local wibox = require "wibox"
 local command = [[bash -c "nice nmcli d wifi list | grep '*' | awk '{print $(NF - 2)}'"]]
 
 ---@type number
-local timeout = 15
+local timeout = 2
 
 ---@type string
 local crit_color = "#ff0000"
