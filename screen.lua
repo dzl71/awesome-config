@@ -76,7 +76,7 @@ local keyboard_preset = wibox.widget {
 }
 local date_preset = wibox.widget {
 	widget = wibox.container.background,
-	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 1)
+	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 3600)
 }
 
 local time_preset = wibox.widget {
