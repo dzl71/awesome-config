@@ -10,7 +10,7 @@ local wibox = require "wibox"
 local command = [[bash -c "nice pamixer --get-volume --get-mute ; nice pamixer --list-sinks | grep -o bluez"]]
 
 ---@type number
-local timeout = 3
+local timeout = 10
 
 ---@type table
 local volume_icons = {
