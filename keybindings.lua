@@ -137,23 +137,23 @@ keys.global = gears.table.join(
 		{ modkey },
 		'r',
 		function(client)
+			local operation = {
+				['k'] = function() awful.client.incwfact(0.05) end, -- increase height
+				['j'] = function() awful.client.incwfact(-0.05) end, -- decrease height
+				['h'] = function() awful.tag.incmwfact(-0.025) end, -- resize left
+				['l'] = function() awful.tag.incmwfact(0.025) end -- resize right
+			}
 			local grabber
-			grabber = awful.keygrabber.run(function(mod, key, event)
-				if event == 'release' then return end
-				local vert_resize_val = 0.05 ---@type number
-				local hor_resize_val = 0.025 ---@type number
-				if key == 'k' then
-					awful.client.incwfact(vert_resize_val) -- direction up
-				elseif key == 'j' then
-					awful.client.incwfact(-vert_resize_val) -- direction down
-				elseif key == 'h' then
-					awful.tag.incmwfact(-hor_resize_val) -- direction left
-				elseif key == 'l' then
-					awful.tag.incmwfact(hor_resize_val) -- direction right
-				else
-					awful.keygrabber.stop(grabber)
+			grabber = awful.keygrabber.run(
+				function(mod, key, event)
+					if event == 'release' then return end -- stay in resizing mode after release
+					if operation[key] == nil then
+						awful.keygrabber.stop(grabber)
+					else
+						operation[key]()
+					end
 				end
-			end)
+			)
 		end,
 		{ description = "client resizing mode", group = "client" } -- data
 	),
