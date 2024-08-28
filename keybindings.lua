@@ -98,12 +98,12 @@ keys.global = gears.table.join(
 		{ description = "spawn terminal", group = 'launcher' }
 	),
 
-	-- spawn firefox
+	-- spawn browser
 	awful.key(
 		{ modkey },
 		"o",
 		function()
-			spawn_client("firefox")
+			spawn_client("zen-browser-optimized")
 		end,
 		{ description = 'spawn firefox (web browser)', group = "launcher" }
 	),
