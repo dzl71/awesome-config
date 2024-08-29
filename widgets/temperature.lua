@@ -11,7 +11,7 @@ local naughty = require("naughty")
 local command = [[bash -c "nice sensors | grep Tctl | awk '{print $2}'"]]
 
 ---@type integer
-local timeout = 1
+local timeout = 2
 
 ---@type string
 local icon = "󰔏"
