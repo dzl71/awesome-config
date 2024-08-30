@@ -90,7 +90,7 @@ return function(color, left_margin, right_margin)
 			else
 				notified = false
 			end
-			utils.inject_info(battery, wibox.widget.textbox(icon .. ' ' .. charge .. '% '))
+			utils.inject_info(battery, wibox.widget.textbox(icon .. ' ' .. charge .. '%'))
 		end,
 		utils.widget_base(color, left_margin, right_margin, 200)
 	)

@@ -61,7 +61,7 @@ return function(color, margin_left, margin_right)
 				end
 				icon = sub_icon .. volume_icons[icon_idx]
 			end
-			utils.inject_info(volume_widget, wibox.widget.textbox(icon .. " " .. volume .. '% '))
+			utils.inject_info(volume_widget, wibox.widget.textbox(icon .. " " .. volume .. '%'))
 		end,
 		utils.widget_base(color, margin_left, margin_right)
 	)

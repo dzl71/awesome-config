@@ -49,11 +49,7 @@ return function(color, left_margin, right_margin)
 			else
 				notified = false
 			end
-			utils.inject_info(temp, wibox.widget({
-				layout = wibox.layout.fixed.horizontal,
-				wibox.widget.textbox(icon .. ' ' .. stdouot),
-				wibox.widget.textbox(" "),
-			}))
+			utils.inject_info(temp, wibox.widget.textbox(icon .. ' ' .. stdouot))
 		end,
 		utils.widget_base(color, left_margin, right_margin, 130)
 	)

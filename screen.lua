@@ -22,7 +22,7 @@ local color_even = "#7b68ee"
 local left_margin = 10
 
 ---@type number
-local right_margin = 20
+local right_margin = 27
 
 -- =================================
 --		defining util functios
@@ -65,23 +65,35 @@ end
 local keyboard_preset = wibox.widget {
 	widget = wibox.container.background,
 	{
-		layout = wibox.layout.fixed.horizontal,
+		widget = wibox.container.margin,
+		right = -10,
 		{
-			widget = wibox.container.margin,
-			wibox.widget.textbox("󰌌 "),
-			right = -10
-		},
-		awful.widget.keyboardlayout:new(),
+			layout = wibox.layout.fixed.horizontal,
+			{
+				widget = wibox.container.margin,
+				wibox.widget.textbox("󰌌 "),
+				right = -10
+			},
+			awful.widget.keyboardlayout:new(),
+		}
 	}
 }
 local date_preset = wibox.widget {
 	widget = wibox.container.background,
-	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 3600)
+	{
+		awful.widget.textclock("󰃱  %d-%m-%Y %a ", 3600),
+		widget = wibox.container.margin,
+		right = -10,
+	}
 }
 
 local time_preset = wibox.widget {
 	widget = wibox.container.background,
-	awful.widget.textclock("  %T ", 1)
+	{
+		awful.widget.textclock("  %T ", 1),
+		widget = wibox.container.margin,
+		right = -10,
+	},
 }
 
 -- ====================================

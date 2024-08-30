@@ -7,7 +7,7 @@ local wibox = require("wibox")
 -- ==========================
 
 ---@type string
-local command = [[bash -c "nice brightnessctl | grep -oP '[0-9.]{1,3}(?=%)'"]]
+local command = [[bash -c "nice brightnessctl | grep -oP '(?<=\()[0-9%]*(?=\))'"]]
 
 ---@type number
 local timeout = 3600
@@ -33,8 +33,7 @@ return function(color, left_margin, right_margin)
 				utils.set_bg(brightness, crit_color)
 				return
 			end
-			local output = string.format("%.0f", stdout) ---@type string
-			utils.inject_info(brightness, wibox.widget.textbox(icon .. output .. '% '))
+				utils.inject_info(brightness, wibox.widget.textbox(icon .. stdout))
 		end,
 		utils.widget_base(color, left_margin, right_margin)
 	)

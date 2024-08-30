@@ -50,7 +50,7 @@ return function(color, left_margin, right_margin)
 			else
 				notified = false
 			end
-			utils.inject_info(cpu, wibox.widget.textbox(icon .. ' ' .. percentage .. "% "))
+			utils.inject_info(cpu, wibox.widget.textbox(icon .. ' ' .. percentage .. "%"))
 		end,
 		utils.widget_base(color, left_margin, right_margin)
 	)
