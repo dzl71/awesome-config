@@ -22,7 +22,7 @@ local color_even = "#7b68ee"
 local left_margin = 10
 
 ---@type number
-local right_margin = 27
+local right_margin = 30
 
 -- =================================
 --		defining util functios
