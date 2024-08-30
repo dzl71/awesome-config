@@ -29,12 +29,12 @@ return function(color, left_margin, right_margin)
 		function(brightness, stdout, stderr, exitreason, exitcode)
 			utils.set_bg(brightness, brightness.default_bg)
 			if stderr:len() > 0 then
-				utils.set_widget(brightness, wibox.widget.textbox(' ' .. icon .. "unavailable "))
+				utils.inject_info(brightness, wibox.widget.textbox(' ' .. icon .. "unavailable "))
 				utils.set_bg(brightness, crit_color)
 				return
 			end
 			local output = string.format("%.0f", stdout) ---@type string
-			utils.set_widget(brightness, wibox.widget.textbox(icon .. output .. '% '))
+			utils.inject_info(brightness, wibox.widget.textbox(icon .. output .. '% '))
 		end,
 		utils.widget_base(color, left_margin, right_margin)
 	)

@@ -43,7 +43,7 @@ return function(color, margin_left, margin_right)
 		function(volume_widget, stdout, stderr, exitreason, exitcode)
 			utils.set_bg(volume_widget, volume_widget.default_bg)
 			if stderr:len() > 0 then
-				utils.set_widget(volume_widget, wibox.widget.textbox(' ' .. mute_icon .. " unavailable "))
+				utils.inject_info(volume_widget, wibox.widget.textbox(' ' .. mute_icon .. " unavailable "))
 				utils.set_bg(volume_widget, crit_color)
 				return
 			end
@@ -61,7 +61,7 @@ return function(color, margin_left, margin_right)
 				end
 				icon = sub_icon .. volume_icons[icon_idx]
 			end
-			utils.set_widget(volume_widget, wibox.widget.textbox(icon .. " " .. volume .. '% '))
+			utils.inject_info(volume_widget, wibox.widget.textbox(icon .. " " .. volume .. '% '))
 		end,
 		utils.widget_base(color, margin_left, margin_right)
 	)
