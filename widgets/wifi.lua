@@ -39,7 +39,7 @@ return function(color, left_margin, right_margin)
 			utils.set_bg(wifi, wifi.default_bg)
 			local icon = no_signal_icon ---@type  string
 			local signal = tonumber(stdout) ---@type integer?
-			if stdout:len() > 0 then
+			if stdout:len() > 0 or signal ~= nil then
 				icon = signal_icons[math.ceil(signal / 25)]
 			else
 				signal = 0
