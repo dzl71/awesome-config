@@ -1,5 +1,6 @@
 local utils = require("widgets.utils")
 local awful = require("awful")
+local gears = require("gears")
 local wibox = require("wibox")
 
 -- ==========================
@@ -8,9 +9,6 @@ local wibox = require("wibox")
 
 ---@type string
 local command = [[bash -c "nice brightnessctl | grep -oP '(?<=\()[0-9%]*(?=\))'"]]
-
----@type number
-local timeout = 3600
 
 ---@type string
 local icon = ' '
@@ -22,20 +20,29 @@ local crit_color = "#ff0000"
 --    creating the widget
 -- ===========================
 
-return function(color, left_margin, right_margin)
-	local widget, updater = awful.widget.watch(
-		command,
-		timeout,
-		function(brightness, stdout, stderr, exitreason, exitcode)
-			utils.set_bg(brightness, brightness.default_bg)
-			if stderr:len() > 0 then
-				utils.inject_info(brightness, wibox.widget.textbox(' ' .. icon .. "unavailable "))
-				utils.set_bg(brightness, crit_color)
-				return
+local widget = utils.widget_base()
+
+local timer = gears.timer({
+	timeout = 3600,
+	call_now = true,
+	autostart = true,
+	callback = function()
+		awful.spawn.easy_async(
+			command,
+			function(out, stderr)
+				utils.set_bg(widget, widget.default_bg)
+				if stderr:len() > 0 then
+					utils.inject_info(widget, wibox.widget.textbox(' ' .. icon .. "unavailable "))
+					utils.set_bg(widget, crit_color)
+					return
+				end
+				utils.inject_info(widget, wibox.widget.textbox(icon .. out))
 			end
-				utils.inject_info(brightness, wibox.widget.textbox(icon .. stdout))
-		end,
-		utils.widget_base(color, left_margin, right_margin)
-	)
-	return { widget = widget, updater = updater }
-end
+		)
+	end
+})
+
+return {
+	widget = widget,
+	timer = timer,
+}

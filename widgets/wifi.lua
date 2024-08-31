@@ -1,6 +1,7 @@
 local utils = require("widgets.utils")
 local awful = require("awful")
-local wibox = require "wibox"
+local gears = require("gears")
+local wibox = require("wibox")
 
 -- ==============================
 --		defining variables
@@ -8,9 +9,6 @@ local wibox = require "wibox"
 
 ---@type string
 local command = [[bash -c "nice nmcli d wifi list | head -2 | tail -1 | awk '{print $(NF - 2)}'"]]
-
----@type number
-local timeout = 2
 
 ---@type string
 local crit_color = "#ff0000"
@@ -31,22 +29,35 @@ local no_signal_icon = "󰤮 "
 --       creating the widget
 -- ===================================
 
-return function(color, left_margin, right_margin)
-	return awful.widget.watch(
-		command,
-		timeout,
-		function(wifi, stdout, stderr, exitreason, exitcode)
-			utils.set_bg(wifi, wifi.default_bg)
-			local icon = no_signal_icon ---@type  string
-			local signal = tonumber(stdout) ---@type integer?
-			if stdout:len() > 0 or signal ~= nil then
-				icon = signal_icons[math.ceil(signal / 25)]
-			else
-				signal = 0
-				utils.set_bg(wifi, crit_color)
+local widget = utils.widget_base()
+
+local timer = gears.timer({
+	timeout = 10,
+	call_now = true,
+	autostart = true,
+	callback = function()
+		awful.spawn.easy_async(
+			command,
+			function(out)
+				utils.set_bg(widget, widget.default_bg)
+				local icon = no_signal_icon ---@type  string
+				local signal = tonumber(out) ---@type integer?
+				if out:len() > 0 or signal ~= nil then
+					icon = signal_icons[math.ceil(signal / 25)]
+				else
+					signal = 0
+					utils.set_bg(widget, crit_color)
+				end
+				utils.inject_info(widget, wibox.widget.textbox(icon .. signal .. "%"))
 			end
-			utils.inject_info(wifi, wibox.widget.textbox(icon .. signal .. "%"))
-		end,
-		utils.widget_base(color, left_margin, right_margin)
-	)
-end
+
+		)
+	end
+
+})
+
+
+return {
+	widget = widget,
+	timer = timer,
+}

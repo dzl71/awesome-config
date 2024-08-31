@@ -1,5 +1,6 @@
 local awful = require("awful")
 local utils = require("widgets.utils")
+local gears = require("gears")
 local naughty = require("naughty")
 local wibox = require("wibox")
 
@@ -9,9 +10,6 @@ local wibox = require("wibox")
 
 ---@type string
 local command = [[bash -c "nice cat /sys/class/power_supply/BAT0/capacity /sys/class/power_supply/BAT0/status"]]
-
----@type integer
-local timeout = 3
 
 ---@type table
 local percentage_icons = {
@@ -63,35 +61,45 @@ end
 --     creating the widget updater
 -- =====================================
 
-return function(color, left_margin, right_margin)
-	return awful.widget.watch(
-		command,
-		timeout,
-		function(battery, stdout, stderr, exit_reason, exit_code)
-			utils.set_bg(battery, battery.default_bg)
-			local icon = "" ---@type string
-			if stderr:len() > 0 then
-				icon = percentage_icons[1]
-				utils.inject_info(battery, wibox.widget.textbox(' ' .. icon .. ' unavailable '))
-				utils.set_bg(battery, crit_color)
-				notify("unable to connect to battery")
-				return
+local widget = utils.widget_base()
+
+local timer = gears.timer({
+	timeout = 3,
+	call_now = true,
+	autostart = true,
+	callback = function()
+		awful.spawn.easy_async(
+			command,
+			function(stdout, stderr)
+				utils.set_bg(widget, widget.default_bg)
+				local icon = "" ---@type string
+				if stderr:len() > 0 then
+					icon = percentage_icons[1]
+					utils.inject_info(widget, wibox.widget.textbox(' ' .. icon .. ' unavailable '))
+					utils.set_bg(widget, crit_color)
+					notify("unable to connect to battery")
+					return
+				end
+				local charge = tonumber(string.match(stdout, "%d+")) ---@type integer?
+				icon = percentage_icons[math.ceil(charge / 10) + 1]
+				local status = string.match(stdout, "%a+") ---@type string
+				if status == charging_status then
+					icon = icon .. charging_icon
+				end
+				if charge <= crit_threshold then
+					icon = icon
+					utils.set_bg(widget, crit_color)
+					notify("low battery percentage (" .. charge .. "%)")
+				else
+					notified = false
+				end
+				utils.inject_info(widget, wibox.widget.textbox(icon .. ' ' .. charge .. '%'))
 			end
-			local charge = tonumber(string.match(stdout, "%d+")) ---@type integer?
-			icon = percentage_icons[math.ceil(charge / 10) + 1]
-			local status = string.match(stdout, "%a+") ---@type string
-			if status == charging_status then
-				icon = icon .. charging_icon
-			end
-			if charge <= crit_threshold then
-				icon = icon
-				utils.set_bg(battery, crit_color)
-				notify("low battery percentage (" .. charge .. "%)")
-			else
-				notified = false
-			end
-			utils.inject_info(battery, wibox.widget.textbox(icon .. ' ' .. charge .. '%'))
-		end,
-		utils.widget_base(color, left_margin, right_margin, 200)
-	)
-end
+		)
+	end
+})
+
+return {
+	widget = widget,
+	timer = timer,
+}

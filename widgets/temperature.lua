@@ -1,5 +1,6 @@
 local utils = require("widgets.utils")
 local awful = require("awful")
+local gears = require("gears")
 local wibox = require("wibox")
 local naughty = require("naughty")
 
@@ -9,9 +10,6 @@ local naughty = require("naughty")
 
 ---@type string
 local command = [[bash -c "nice sensors | grep Tctl | awk '{print $2}'"]]
-
----@type integer
-local timeout = 2
 
 ---@type string
 local icon = "󰔏"
@@ -29,28 +27,38 @@ local notified = false
 --		  creating the widget
 -- ==================================
 
-return function(color, left_margin, right_margin)
-	return awful.widget.watch(
-		command,
-		timeout,
-		function(temp, stdouot, stderr, exitreason, exitcode)
-			utils.set_bg(temp, temp.default_bg)
-			if tonumber(string.match(stdouot, "[%d.]+")) > crit_threshold then
-				utils.set_bg(temp, crit_color)
-				if not notified then
-					icon = icon
-					notified = true
-					naughty.notify({
-						title = "Temperature\n",
-						text = "this laptop is overheating",
-						preset = naughty.config.presets.critical,
-					})
+local widget = utils.widget_base()
+
+local timer = gears.timer({
+	timeout = 2,
+	call_now = true,
+	autostart = true,
+	callback = function()
+		awful.spawn.easy_async(
+			command,
+			function(out)
+				utils.set_bg(widget, widget.default_bg)
+				if tonumber(string.match(out, "[%d.]+")) > crit_threshold then
+					utils.set_bg(widget, crit_color)
+					if not notified then
+						icon = icon
+						notified = true
+						naughty.notify({
+							title = "Temperature\n",
+							text = "this laptop is overheating",
+							preset = naughty.config.presets.critical,
+						})
+					end
+				else
+					notified = false
 				end
-			else
-				notified = false
+				utils.inject_info(widget, wibox.widget.textbox(icon .. ' ' .. out))
 			end
-			utils.inject_info(temp, wibox.widget.textbox(icon .. ' ' .. stdouot))
-		end,
-		utils.widget_base(color, left_margin, right_margin, 130)
-	)
-end
+		)
+	end
+})
+
+return {
+	widget = widget,
+	timer = timer,
+}
