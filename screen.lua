@@ -2,6 +2,7 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
 local awful = require("awful")
+local widget_utils = require("widgets.utils")
 
 -- ===========================
 --    defining variables
@@ -28,23 +29,6 @@ local right_margin = 30
 --		defining util functios
 -- =================================
 
----@param widget any
----@param color string
----@return any
-local function theme(widget, color, margin_right)
-	widget.widget = wibox.widget {
-		widget.widget,
-		widget = wibox.container.margin,
-		left = 10,
-		right = margin_right,
-	}
-	widget.shape = gears.shape.rounded_bar
-	widget.bg = color
-	widget.default_bg = color
-	return widget
-end
-
-
 local function set_wallpaper(s)
 	-- Wallpaper
 	if beautiful.wallpaper then
@@ -61,135 +45,137 @@ end
 --     defining small widgets presets
 -- ======================================
 
----@type table
-local keyboard_preset = wibox.widget {
-	widget = wibox.container.background,
-	{
-		widget = wibox.container.margin,
-		right = -10,
+local keyboard_layout = widget_utils.widget_base()
+widget_utils.inject_info(
+	keyboard_layout,
+	wibox.widget({
+		layout = wibox.layout.fixed.horizontal,
 		{
-			layout = wibox.layout.fixed.horizontal,
-			{
-				widget = wibox.container.margin,
-				wibox.widget.textbox("󰌌 "),
-				right = -10
-			},
-			awful.widget.keyboardlayout:new(),
-		}
-	}
-}
-local date_preset = wibox.widget {
-	widget = wibox.container.background,
-	{
-		awful.widget.textclock("󰃱  %d-%m-%Y %a ", 3600),
-		widget = wibox.container.margin,
-		right = -10,
-	}
-}
+			widget = wibox.container.margin,
+			wibox.widget.textbox("󰌌 "),
+			right = -10
+		},
+		awful.widget.keyboardlayout:new(),
+	})
+)
 
-local time_preset = wibox.widget {
-	widget = wibox.container.background,
-	{
-		awful.widget.textclock("  %T ", 1),
-		widget = wibox.container.margin,
-		right = -10,
-	},
-}
+local date = widget_utils.widget_base()
+widget_utils.inject_info(
+	date,
+	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 3600)
+)
 
--- ====================================
---		setup widget initializers
--- ====================================
+local time = widget_utils.widget_base()
+widget_utils.inject_info(
+	time,
+	awful.widget.textclock("  %T ", 1)
+)
 
-local taglist_init = require("widgets.taglist")
-local wifi_init = require("widgets.wifi")
-local temperature_init = require("widgets.temperature")
-local ram_init = require("widgets.ram")
-local cpu_init = require("widgets.cpu")
-local volume_init = require("widgets.volume")
-local brightness_init = require("widgets.brightness")
-local battery_init = require("widgets.battery")
-
--- ====================================
---	   setup always visible widgets
--- ====================================
-
-local taglist = function(screen)
-	return taglist_init(
-		screen,
-		color_odd,
+local layout_box = function(screen)
+	local lbox = widget_utils.widget_base()
+	widget_utils.inject_info(
+		lbox,
+		awful.widget.layoutbox(screen)
+	)
+	widget_utils.widget_init(
+		lbox,
+		color_even,
 		10,
 		10
 	)
+	return lbox
 end
-local wifi = wifi_init(
-	color_even,
-	left_margin,
-	right_margin
-)
-local temperature = temperature_init(
-	color_odd,
-	left_margin,
-	right_margin
-)
-local ram = ram_init(
-	color_even,
-	left_margin,
-	right_margin
-)
-local cpu = cpu_init(
-	color_odd,
-	left_margin,
-	right_margin
-)
-local volume = volume_init(
-	color_even,
-	left_margin,
-	right_margin
-)
-local brightness = brightness_init(
-	color_odd,
-	left_margin,
-	right_margin
-)
-local battery = battery_init(
-	color_even,
-	left_margin,
-	right_margin
-)
-local keyboard_layout = theme(
-	keyboard_preset,
-	color_odd,
-	right_margin
-)
-local date = theme(
-	date_preset,
-	color_even,
-	right_margin
-)
-local time = theme(
-	time_preset,
-	color_odd,
-	right_margin
-)
-local layout_box = function(screen)
-	return theme(
-		wibox.widget {
-			widget = wibox.container.background,
-			awful.widget.layoutbox(screen),
-		},
+
+-- ======================
+--		load widgets
+-- ======================
+
+local taglist_base = require("widgets.taglist").widget
+local wifi = require("widgets.wifi").widget
+local temperature = require("widgets.temperature").widget
+local ram = require("widgets.ram").widget
+local cpu = require("widgets.cpu").widget
+local volume = require("widgets.volume").widget
+local brightness = require("widgets.brightness").widget
+local battery = require("widgets.battery").widget
+
+-- ====================================
+--	   setup "always visible" widgets
+-- ====================================
+
+local taglist = function(screen)
+	local tlist = widget_utils.widget_base()
+	widget_utils.widget_init(
+		tlist,
 		color_even,
-		10
+		left_margin,
+		12.5
 	)
+	widget_utils.inject_info(tlist, taglist_base(screen))
+	return tlist
 end
 
--- =============================
---    collect widget updaters
--- =============================
+widget_utils.widget_init(
+	wifi,
+	color_even,
+	left_margin,
+	right_margin
+)
 
-local widget_updaters = {
-	volume_updater = volume.updater,
-	brightness_updater = brightness.updater,
-}
+widget_utils.widget_init(
+	temperature,
+	color_odd,
+	left_margin,
+	right_margin
+)
+widget_utils.widget_init(
+	ram,
+	color_even,
+	left_margin,
+	right_margin
+)
+widget_utils.widget_init(
+	cpu,
+	color_odd,
+	left_margin,
+	right_margin
+)
+widget_utils.widget_init(
+	volume,
+	color_even,
+	left_margin,
+	right_margin
+)
+widget_utils.widget_init(
+	brightness,
+	color_odd,
+	left_margin,
+	right_margin
+)
+widget_utils.widget_init(
+	battery,
+	color_even,
+	left_margin,
+	right_margin
+)
+widget_utils.widget_init(
+	keyboard_layout,
+	color_odd,
+	left_margin,
+	18
+)
+widget_utils.widget_init(
+	date,
+	color_even,
+	left_margin,
+	18
+)
+widget_utils.widget_init(
+	time,
+	color_odd,
+	left_margin,
+	18
+)
 
 -- ==================================
 --		configuring the screen
@@ -264,5 +250,3 @@ awful.screen.connect_for_each_screen(function(s)
 		},
 	})
 end)
-
-return widget_updaters
