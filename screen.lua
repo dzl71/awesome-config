@@ -107,7 +107,7 @@ local taglist = function(screen)
 	local tlist = widget_utils.widget_base()
 	widget_utils.widget_init(
 		tlist,
-		color_even,
+		color_odd,
 		left_margin,
 		12.5
 	)
