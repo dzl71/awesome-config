@@ -32,7 +32,7 @@ local keys = {}
 ---@param command string
 local function volume_change(command)
 	awful.spawn(command)
-	require("screen").volume_updater:emit_signal("timeout")
+	require("widgets.volume").timer:emit_signal("timeout")
 end
 
 -- change brightness
@@ -40,7 +40,7 @@ end
 ---@param percentage string
 local function brightness_move(percentage)
 	awful.spawn("brightnessctl set " .. percentage)
-	require("screen").brightness_updater:emit_signal("timeout")
+	require("widgets.brightness").timer:emit_signal("timeout")
 end
 
 -- raise client focus
