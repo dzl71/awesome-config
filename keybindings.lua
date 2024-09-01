@@ -70,8 +70,8 @@ keys.global = gears.table.join(
 
 -- restart awesome
 	awful.key(
-		{ modkey, "Shift" },
-		'c',
+		{ modkey, "Control" },
+		'r',
 		awesome.restart,
 		{ description = "restart awesome", group = "awesome" }
 	),
