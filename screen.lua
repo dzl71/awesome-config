@@ -46,7 +46,7 @@ end
 -- ======================================
 
 local keyboard_layout = widget_utils.widget_base()
-widget_utils.inject_info(
+widget_utils.inject_widget_info(
 	keyboard_layout,
 	wibox.widget({
 		layout = wibox.layout.fixed.horizontal,
@@ -60,20 +60,20 @@ widget_utils.inject_info(
 )
 
 local date = widget_utils.widget_base()
-widget_utils.inject_info(
+widget_utils.inject_widget_info(
 	date,
 	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 3600)
 )
 
 local time = widget_utils.widget_base()
-widget_utils.inject_info(
+widget_utils.inject_widget_info(
 	time,
 	awful.widget.textclock("  %T ", 1)
 )
 
 local layout_box = function(screen)
 	local lbox = widget_utils.widget_base()
-	widget_utils.inject_info(
+	widget_utils.inject_widget_info(
 		lbox,
 		awful.widget.layoutbox(screen)
 	)
@@ -111,7 +111,7 @@ local taglist = function(screen)
 		left_margin,
 		12.5
 	)
-	widget_utils.inject_info(tlist, taglist_base(screen))
+	widget_utils.inject_widget_info(tlist, taglist_base(screen))
 	return tlist
 end
 
@@ -250,3 +250,4 @@ awful.screen.connect_for_each_screen(function(s)
 		},
 	})
 end)
+

@@ -53,7 +53,7 @@ local timer = gears.timer({
 				else
 					notified = false
 				end
-				utils.inject_info(widget, wibox.widget.textbox(icon .. ' ' .. percentage .. "%"))
+				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. ' ' .. percentage .. "%"))
 			end
 		)
 	end

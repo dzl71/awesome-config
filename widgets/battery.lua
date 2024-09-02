@@ -75,7 +75,7 @@ local timer = gears.timer({
 				local icon = "" ---@type string
 				if stderr:len() > 0 then
 					icon = percentage_icons[1]
-					utils.inject_info(widget, wibox.widget.textbox(' ' .. icon .. ' unavailable '))
+					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. icon .. ' unavailable '))
 					utils.set_bg(widget, crit_color)
 					notify("unable to connect to battery")
 					return
@@ -93,7 +93,7 @@ local timer = gears.timer({
 				else
 					notified = false
 				end
-				utils.inject_info(widget, wibox.widget.textbox(icon .. ' ' .. charge .. '%'))
+				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. ' ' .. charge .. '%'))
 			end
 		)
 	end

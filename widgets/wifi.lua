@@ -48,7 +48,7 @@ local timer = gears.timer({
 					signal = 0
 					utils.set_bg(widget, crit_color)
 				end
-				utils.inject_info(widget, wibox.widget.textbox(icon .. signal .. "%"))
+				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. signal .. "%"))
 			end
 
 		)
