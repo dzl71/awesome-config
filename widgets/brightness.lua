@@ -8,7 +8,7 @@ local wibox = require("wibox")
 -- ==========================
 
 ---@type string
-local command = [[bash -c "nice brightnessctl | grep -oP '(?<=\()[0-9%]*(?=\))'"]]
+local command = [[bash -c "nice brightnessctl | grep -oP '(?<=\()[0-9%]*(?=%\))'"]]
 
 ---@type string
 local icon = ' '
@@ -22,8 +22,10 @@ local crit_color = "#ff0000"
 
 local widget = utils.widget_base()
 
+local popup = utils.popup_base()
+
 local timer = gears.timer({
-	timeout = 3600,
+	timeout = 2,
 	call_now = true,
 	autostart = true,
 	callback = function()
@@ -32,17 +34,30 @@ local timer = gears.timer({
 			function(out, stderr)
 				utils.set_bg(widget, widget.default_bg)
 				if stderr:len() > 0 then
-					utils.inject_info(widget, wibox.widget.textbox(' ' .. icon .. "unavailable "))
+					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. icon .. "unavailable "))
 					utils.set_bg(widget, crit_color)
 					return
 				end
-				utils.inject_info(widget, wibox.widget.textbox(icon .. out))
+				local brightness = tonumber(out)
+				local text = icon .. brightness .. '%'
+				utils.inject_widget_info(widget, wibox.widget.textbox(text))
+				utils.inject_popup_info(popup, brightness, text)
 			end
 		)
+		popup.visible = false
 	end
 })
+
+-- stop the timer if it works
+timer:connect_signal(
+	"timeout",
+	function()
+		timer:stop()
+	end
+)
 
 return {
 	widget = widget,
 	timer = timer,
+	popup = popup,
 }

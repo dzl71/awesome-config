@@ -1,5 +1,6 @@
 local utils = require("widgets.utils")
 local awful = require("awful")
+local beautiful = require("beautiful").get()
 local gears = require("gears")
 local wibox = require "wibox"
 
@@ -36,6 +37,8 @@ local crit_color = "#ff0000"
 
 local widget = utils.widget_base()
 
+local popup = utils.popup_base()
+
 local timer = gears.timer({
 	timeout = 2,
 	call_now = true,
@@ -46,7 +49,7 @@ local timer = gears.timer({
 			function(out, stderr)
 				utils.set_bg(widget, widget.default_bg)
 				if stderr:len() > 0 then
-					utils.inject_info(widget, wibox.widget.textbox(' ' .. mute_icon .. " unavailable "))
+					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. mute_icon .. " unavailable "))
 					utils.set_bg(widget, crit_color)
 					return
 				end
@@ -64,13 +67,17 @@ local timer = gears.timer({
 					end
 					icon = sub_icon .. volume_icons[icon_idx]
 				end
-				utils.inject_info(widget, wibox.widget.textbox(icon .. " " .. volume .. '%'))
+				local text = icon .. " " .. volume .. '%'
+				utils.inject_widget_info(widget, wibox.widget.textbox(text))
+				utils.inject_popup_info(popup, volume, text)
 			end
 		)
+		popup.visible = false
 	end
 })
 
 return {
 	widget = widget,
 	timer = timer,
+	popup = popup,
 }
