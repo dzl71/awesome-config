@@ -1,4 +1,5 @@
 local awful = require("awful")
+local wibox = require("wibox")
 local gears = require("gears")
 
 -- ======================
@@ -23,24 +24,45 @@ local modkey = "Mod1"
 ---@type table
 local keys = {}
 
--- =================================
---	  defining utility functions
--- =================================
+-- =======================
+--	  defining utility
+-- =======================
+
+local hold_timeout = gears.timer({
+	timeout = 0.075,
+	autostart = false,
+	call_now = false,
+	single_shot = true,
+	callback = function()
+	end,
+})
 
 -- change volume
 
 ---@param command string
 local function volume_change(command)
-	awful.spawn(command)
-	require("widgets.volume").timer:emit_signal("timeout")
+	local volume = require("widgets.volume")
+	if not hold_timeout.started then
+		hold_timeout:start()
+		awful.spawn(command)
+		volume.timer:emit_signal("timeout")
+		volume.popup.visible = true
+		volume.timer:again()
+	end
 end
 
 -- change brightness
 
 ---@param percentage string
-local function brightness_move(percentage)
-	awful.spawn("brightnessctl set " .. percentage)
-	require("widgets.brightness").timer:emit_signal("timeout")
+local function brightness_change(percentage)
+	local brightness = require("widgets.brightness")
+	if not hold_timeout.started then
+		hold_timeout:start()
+		awful.spawn("brightnessctl set " .. percentage)
+		brightness.timer:emit_signal("timeout")
+		brightness.popup.visible = true
+		brightness.timer:again()
+	end
 end
 
 -- raise client focus
@@ -182,7 +204,7 @@ keys.global = gears.table.join(
 		{},
 		"XF86MonBrightnessUp",
 		function()
-			brightness_move("1%+")
+			brightness_change("1%+")
 		end
 	),
 
@@ -192,7 +214,7 @@ keys.global = gears.table.join(
 		{},
 		"XF86MonBrightnessDown",
 		function()
-			brightness_move("1%-")
+			brightness_change("1%-")
 		end
 	),
 
