@@ -16,7 +16,7 @@ local default_master_count = 1
 local keyboard_layout_current = 1
 
 ---@type integer
-local max_clients = 5
+local max_clients = 4
 
 ---@type string
 local modkey = "Mod1"
