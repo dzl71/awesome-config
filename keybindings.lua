@@ -115,7 +115,7 @@ keys.global = gears.table.join(
 		{ modkey },
 		"Return",
 		function()
-			spawn_client(Terminal .. ' -e ' .. Shell)
+			spawn_client(Terminal)
 		end,
 		{ description = "spawn terminal", group = 'launcher' }
 	),
