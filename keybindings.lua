@@ -1,5 +1,5 @@
 local awful = require("awful")
-local wibox = require("wibox")
+local naughty = require("naughty")
 local gears = require("gears")
 
 -- ======================
@@ -149,35 +149,6 @@ keys.global = gears.table.join(
 			-- awful.spawn.with_shell
 		end,
 		{ description = 'spawn rofi (clients browser)', group = "launcher" }
-	),
-
-	-- =======================
-	--     client resizing
-	-- =======================
-
-	awful.key(
-		{ modkey },
-		'r',
-		function(client)
-			local operation = {
-				['k'] = function() awful.client.incwfact(0.05) end, -- increase height
-				['j'] = function() awful.client.incwfact(-0.05) end, -- decrease height
-				['h'] = function() awful.tag.incmwfact(-0.025) end, -- resize left
-				['l'] = function() awful.tag.incmwfact(0.025) end -- resize right
-			}
-			local grabber
-			grabber = awful.keygrabber.run(
-				function(mod, key, event)
-					if event == 'release' then return end -- stay in resizing mode after release
-					if operation[key] == nil then
-						awful.keygrabber.stop(grabber)
-					else
-						operation[key]()
-					end
-				end
-			)
-		end,
-		{ description = "client resizing mode", group = "client" } -- data
 	),
 
 	-- ========================
@@ -419,7 +390,33 @@ keys.client = gears.table.join(
 		end,
 		{ description = "kill client", group = "client" }
 	)
-
 )
+
+-- ====================================
+--     defining client keygrabbers
+-- ====================================
+
+-- client resizing
+awful.keygrabber({
+	timeout = 2,
+	-- keybindings to start the keygrabber
+	root_keybindings = {
+		{ { modkey }, 'r', function() end },
+	},
+	-- keygrabber keybindings
+	keybindings = {
+		{ {}, 'h', function() awful.tag.incmwfact(-0.025) end }, -- resize left
+		{ {}, 'j', function() awful.client.incwfact(-0.05) end }, -- decrease height
+		{ {}, 'k', function() awful.client.incwfact(0.05) end }, -- increase height
+		{ {}, 'l', function() awful.tag.incmwfact(0.025) end }, -- resize right
+	},
+	-- had to do this because allowed_keys terminated the keygrabber instantly
+	_allowed_keys = {},
+	keypressed_callback = function(self, _, key, _)
+		if not gears.table.hasitem(self._allowed_keys, key) then
+			self:stop()
+		end
+	end,
+})
 
 return keys
