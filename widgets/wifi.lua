@@ -8,7 +8,7 @@ local wibox = require("wibox")
 -- ==============================
 
 ---@type string
-local command = [[bash -c "nice nmcli d wifi list | head -2 | tail -1 | awk '{print $(NF - 2)}'"]]
+local command = [[bash -c "nice nmcli d wifi list | grep '\*' | awk '{print $(NF - 2)}'"]]
 
 ---@type string
 local crit_color = "#ff0000"
