@@ -8,8 +8,6 @@ local widget_utils = require("widgets.utils")
 --    defining variables
 -- ===========================
 
-local fixed_horizontal = wibox.layout.fixed.horizontal
-
 ---@type integer
 local tags_num = 4
 
@@ -225,7 +223,7 @@ awful.screen.connect_for_each_screen(function(s)
 		layout = wibox.layout.align.horizontal,
 		-- Left widgets
 		{
-			layout = fixed_horizontal,
+			layout = wibox.layout.fixed.horizontal,
 			taglist(s),
 			wibox.widget.textbox(" "),
 			wibox.widget.systray(),
@@ -234,7 +232,7 @@ awful.screen.connect_for_each_screen(function(s)
 		wibox.widget.base.empty_widget(),
 		-- Right widgets
 		{
-			layout = fixed_horizontal,
+			layout = wibox.layout.fixed.horizontal,
 			spacing = -20,
 			wifi,
 			temperature,
