@@ -49,7 +49,7 @@ local timer = gears.timer({
 			function(out, stderr)
 				utils.set_bg(widget, widget.default_bg)
 				if stderr:len() > 0 then
-					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. mute_icon .. " unavailable "))
+					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. mute_icon .. " N/A "))
 					utils.set_bg(widget, crit_color)
 					return
 				end
