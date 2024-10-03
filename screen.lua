@@ -226,10 +226,9 @@ awful.screen.connect_for_each_screen(function(s)
 			layout = wibox.layout.fixed.horizontal,
 			taglist(s),
 			wibox.widget.textbox(" "),
-			wibox.widget.systray(),
 		},
 		-- middle widget
-		wibox.widget.base.empty_widget(),
+		wibox.widget.systray(),
 		-- Right widgets
 		{
 			layout = wibox.layout.fixed.horizontal,
@@ -248,4 +247,3 @@ awful.screen.connect_for_each_screen(function(s)
 		},
 	})
 end)
-
