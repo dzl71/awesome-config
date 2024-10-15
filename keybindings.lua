@@ -125,7 +125,7 @@ keys.global = gears.table.join(
 		{ modkey },
 		"o",
 		function()
-			spawn_client("zen-browser-optimized")
+			spawn_client("zen-browser")
 		end,
 		{ description = 'spawn firefox (web browser)', group = "launcher" }
 	),
