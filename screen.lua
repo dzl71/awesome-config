@@ -214,7 +214,7 @@ awful.screen.connect_for_each_screen(function(s)
 		position = "top",
 		screen = s,
 		fg = "#ffffff",
-		height = 27,
+		height = 25,
 		bg = "#00000000",
 	})
 
