@@ -8,9 +8,6 @@ local widget_utils = require("widgets.utils")
 --    defining variables
 -- ===========================
 
----@type integer
-local tags_num = 4
-
 ---@type string
 local color_odd = "#8a2be2"
 
@@ -88,7 +85,7 @@ end
 --		load widgets
 -- ======================
 
-local taglist_base = require("widgets.taglist").widget
+local taglist = require("widgets.taglist").widget
 local wifi = require("widgets.wifi").widget
 local temperature = require("widgets.temperature").widget
 local ram = require("widgets.ram").widget
@@ -100,18 +97,6 @@ local battery = require("widgets.battery").widget
 -- ====================================
 --	   setup "always visible" widgets
 -- ====================================
-
-local taglist = function(screen)
-	local tlist = widget_utils.widget_base()
-	widget_utils.widget_init(
-		tlist,
-		color_odd,
-		left_margin,
-		12.5
-	)
-	widget_utils.inject_widget_info(tlist, taglist_base(screen))
-	return tlist
-end
 
 widget_utils.widget_init(
 	wifi,
@@ -188,15 +173,14 @@ awful.screen.connect_for_each_screen(function(s)
 	set_wallpaper(s)
 
 	-- Each screen has its own tag table.
-	for i = 1, tags_num do
+	for i = 1, 10 do
 		awful.tag.add(
-			i, --"",
+			i,
 			{
 				index = i,
 				screen = s,
 				layout = awful.layout.layouts[1],
 				master_count = 1,
-				icon = string.format("%s/icons/numeric-%d-circle-outline.svg", gears.filesystem.get_dir("config"), i),
 			})
 	end
 
@@ -226,23 +210,27 @@ awful.screen.connect_for_each_screen(function(s)
 			layout = wibox.layout.fixed.horizontal,
 			taglist(s),
 			wibox.widget.textbox(" "),
+			wibox.widget.systray(),
 		},
 		-- middle widget
-		wibox.widget.systray(),
+		{
+			layout = wibox.layout.fixed.horizontal,
+			spacing = -20,
+			date,
+			time,
+		},
 		-- Right widgets
 		{
 			layout = wibox.layout.fixed.horizontal,
 			spacing = -20,
-			wifi,
-			temperature,
-			ram,
-			cpu,
+			battery,
 			volume.widget,
 			brightness.widget,
-			battery,
+			wifi,
+			cpu,
+			ram,
+			temperature,
 			keyboard_layout,
-			date,
-			time,
 			layout_box(s),
 		},
 	})

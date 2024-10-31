@@ -34,17 +34,3 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-
--- ==============================================
---     change tag name (dependts on if tagged)
--- ==============================================
-
-tag.connect_signal("tagged", function(tag)
-	tag.icon = string.format("%s/icons/numeric-%d-circle.svg", config_dir, tag.index)
-end)
-
-tag.connect_signal("untagged", function(tag)
-	if #tag:clients() < 1 then
-		tag.icon = string.format("%s/icons/numeric-%d-circle-outline.svg", config_dir, tag.index)
-	end
-end)

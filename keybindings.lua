@@ -249,8 +249,9 @@ keys.global = gears.table.join(
 	)
 )
 
-for i = 1, 9 do
+for i = 1, 10 do
 	keys.global = gears.table.join(keys.global,
+
 		-- View tag only.
 		awful.key({ modkey }, "#" .. i + 9,
 			function()
@@ -260,7 +261,9 @@ for i = 1, 9 do
 					tag:view_only()
 				end
 			end,
-			{ description = "view tag #" .. i, group = "tag" }),
+			{ description = "view tag #" .. i, group = "tag" }
+		),
+
 		-- Toggle tag display.
 		awful.key({ modkey, "Control" }, "#" .. i + 9,
 			function()
@@ -270,7 +273,9 @@ for i = 1, 9 do
 					awful.tag.viewtoggle(tag)
 				end
 			end,
-			{ description = "toggle tag #" .. i, group = "tag" }),
+			{ description = "toggle tag #" .. i, group = "tag" }
+		),
+
 		-- Move client to tag.
 		awful.key({ modkey, "Shift" }, "#" .. i + 9,
 			function()
@@ -281,8 +286,8 @@ for i = 1, 9 do
 					end
 				end
 			end,
-			{ description = "move focused client to tag #" .. i, group = "tag" })
-	-- Toggle tag on focused client.
+			{ description = "move focused client to tag #" .. i, group = "tag" }
+		)
 	)
 end
 
