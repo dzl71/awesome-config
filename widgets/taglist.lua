@@ -5,6 +5,8 @@ local wibox = require("wibox")
 local main_color = '#f8c8dc'
 local empty_color = "#3a425f"
 
+local forced_size = 25
+
 local hover_style = {
 	shape_border_color = main_color,
 	bg = '#000000',
@@ -63,8 +65,8 @@ local widget_template = {
 	fg = empty_color,
 	shape_border_color = empty_color,
 	shape_border_width = 2,
-	forced_height = 30,
-	forced_width = 30,
+	forced_height = forced_size,
+	forced_width = forced_size,
 	{
 		id = "placement",
 		widget = wibox.container.place,
@@ -106,6 +108,9 @@ local widget = function(screen)
 		screen = screen,
 		filter = awful.widget.taglist.filter.all,
 		widget_template = widget_template,
+		style = {
+			spacing = 3,
+		},
 	})
 end
 
