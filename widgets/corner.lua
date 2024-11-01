@@ -15,6 +15,7 @@ local base_config = {
 	forced_width = 40,
 	forced_height = 40,
 	thickness = 3,
+	rounded_edge = true,
 }
 
 local right = wibox.widget({
