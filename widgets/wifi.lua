@@ -13,6 +13,9 @@ local command = [[bash -c "nice nmcli d wifi list | grep '\*' | awk '{print $(NF
 ---@type string
 local crit_color = "#ff0000"
 
+---@type string
+local default_color = "#c3b1e1"
+
 ---@type table
 local signal_icons = {
 	"󰤟 ",
@@ -29,7 +32,7 @@ local no_signal_icon = "󰤮 "
 --       creating the widget
 -- ===================================
 
-local widget = utils.widget_base()
+local widget = utils.widget_base(default_color)
 
 local timer = gears.timer({
 	timeout = 10,
@@ -39,14 +42,13 @@ local timer = gears.timer({
 		awful.spawn.easy_async(
 			command,
 			function(out)
-				utils.set_bg(widget, widget.default_bg)
 				local icon = no_signal_icon ---@type  string
 				local signal = tonumber(out) ---@type integer?
 				if out:len() > 0 or signal ~= nil then
 					icon = signal_icons[math.ceil(signal / 25)]
 				else
 					signal = 0
-					utils.set_bg(widget, crit_color)
+					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
 				end
 				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. signal .. "%"))
 			end

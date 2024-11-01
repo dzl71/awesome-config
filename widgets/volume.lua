@@ -1,6 +1,5 @@
 local utils = require("widgets.utils")
 local awful = require("awful")
-local beautiful = require("beautiful").get()
 local gears = require("gears")
 local wibox = require "wibox"
 
@@ -13,10 +12,10 @@ local command = [[bash -c "nice pamixer --get-volume --get-mute ; nice pamixer -
 
 ---@type table
 local volume_icons = {
-	'󰕿',
-	'󰖀',
-	'󰕾',
-	'󰕾',
+	'󰕿 ',
+	'󰖀 ',
+	'󰕾 ',
+	'󰕾 ',
 }
 
 ---@type string
@@ -31,11 +30,14 @@ local not_mute = "false"
 ---@type string
 local crit_color = "#ff0000"
 
+---@type string
+local default_color = "#fac898"
+
 -- ==============================
 --		creating the widget
 -- ==============================
 
-local widget = utils.widget_base()
+local widget = utils.widget_base(default_color)
 
 local popup = utils.popup_base()
 
@@ -47,10 +49,9 @@ local timer = gears.timer({
 		awful.spawn.easy_async(
 			command,
 			function(out, stderr)
-				utils.set_bg(widget, widget.default_bg)
 				if stderr:len() > 0 then
-					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. mute_icon .. " N/A "))
-					utils.set_bg(widget, crit_color)
+					utils.inject_widget_info(widget, wibox.widget.textbox(mute_icon .. " N/A "))
+					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
 					return
 				end
 				local sub_icon = '' ---@type string
@@ -67,7 +68,7 @@ local timer = gears.timer({
 					end
 					icon = sub_icon .. volume_icons[icon_idx]
 				end
-				local text = icon .. " " .. volume .. '%'
+				local text = icon .. volume .. '%'
 				utils.inject_widget_info(widget, wibox.widget.textbox(text))
 				utils.inject_popup_info(popup, volume, text)
 			end

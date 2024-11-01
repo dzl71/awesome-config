@@ -18,21 +18,37 @@ local base_config = {
 	rounded_edge = true,
 }
 
-local right = wibox.widget({
+---returns a right corner widget, with margins from left and right
+---margin.left is optional number
+---margin.right is optional number
+---@param margin table
+---@return any
+local right = function(margin)
+	return wibox.widget({
 	widget = wibox.container.margin,
-	left = -15,
+	left = margin.left,
+	right = margin.right,
 	base_config
 })
+end
 
-local left = wibox.widget({
-	widget = wibox.container.margin,
-	right = -15,
-	{
-		widget = wibox.container.mirror,
-		reflection = { horizontal = true, vertical = false, },
-		base_config
-	}
-})
+---returns a left corner widget, with margins from left and right
+---margin.left is optional number
+---margin.right is optional number
+---@param margin table
+---@return any
+local left = function(margin)
+	return wibox.widget({
+		widget = wibox.container.margin,
+		right = margin.right,
+		left = margin.left,
+		{
+			widget = wibox.container.mirror,
+			reflection = { horizontal = true, vertical = false, },
+			base_config
+		}
+	})
+end
 
 return {
 	left = left, right = right,

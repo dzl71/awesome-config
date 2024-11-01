@@ -20,6 +20,9 @@ local crit_threshold = 85
 ---@type string
 local crit_color = "#ff0000"
 
+---@type string
+local default_color = "#f8c8dc"
+
 ---@type boolean
 local notified = false
 
@@ -27,7 +30,7 @@ local notified = false
 --		  creating the widget
 -- ==================================
 
-local widget = utils.widget_base()
+local widget = utils.widget_base(default_color)
 
 local timer = gears.timer({
 	timeout = 3,
@@ -37,10 +40,9 @@ local timer = gears.timer({
 		awful.spawn.easy_async(
 			command,
 			function(out)
-				utils.set_bg(widget, widget.default_bg)
 				local percentage = string.format("%.1f", out) ---@type string
 				if tonumber(percentage) > crit_threshold then
-					utils.set_bg(widget, crit_color)
+					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
 					if not notified then
 						icon = icon
 						notified = true
@@ -53,7 +55,7 @@ local timer = gears.timer({
 				else
 					notified = false
 				end
-				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. ' ' .. percentage .. "%"))
+				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. percentage .. "%"))
 			end
 		)
 	end

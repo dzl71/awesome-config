@@ -8,44 +8,28 @@ local utils = {}
 -- widget utils --
 ------------------
 
-function utils.widget_base()
-	return wibox.widget {
-		id = "constraint",
-		widget = wibox.container.constraint,
-		strategy = "exact",
-		-- default_bg = color,
-		{
-			id = 'background',
-			widget = wibox.container.background,
-			shape = gears.shape.rounded_rect,
-			-- bg = color,
-			{
-				id = 'margin',
-				widget = wibox.container.margin,
-				-- left = left_margin,
-				-- right = right_margin,
-			},
-		},
-	}
+function utils.widget_base(default_color)
+	return wibox.widget({
+		widget = wibox.container.background,
+		forced_height = 25,
+		fg = default_color
+	})
 end
 
-function utils.set_bg(widget, color)
-	widget:get_children_by_id("background")[1].bg = color
+---sets the color of the widget
+---color is a table with the followin fields
+---optional bg: background of type sring?
+---optional fg: foreground of type sring?
+---setting one of the fields to nil is same as not defining it
+---@param widget any
+---@param color table
+function utils.set_color(widget, color)
+	widget.bg = color.bg
+	widget.fg = color.fg
 end
 
 function utils.inject_widget_info(widget, info)
-	widget:get_children_by_id("margin")[1].widget = info
-end
-
----initialize the widget base
----@param color string
----@param left_margin number?
----@param right_margin number?
-function utils.widget_init(widget, color, left_margin, right_margin)
-	widget:get_children_by_id("margin")[1].left = left_margin
-	widget:get_children_by_id("margin")[1].right = right_margin
-	widget:get_children_by_id("background")[1].bg = color
-	widget:get_children_by_id("constraint")[1].default_bg = color
+	widget.widget = info
 end
 
 -----------------

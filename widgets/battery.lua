@@ -35,6 +35,9 @@ local charging_icon = '󱐋'
 ---@type string
 local crit_color = "#ff0000"
 
+---@type string
+local default_color = "#c1e1c1"
+
 ---@type integer
 local crit_threshold = 30
 
@@ -61,7 +64,7 @@ end
 --     creating the widget updater
 -- =====================================
 
-local widget = utils.widget_base()
+local widget = utils.widget_base(default_color)
 
 local timer = gears.timer({
 	timeout = 3,
@@ -71,12 +74,11 @@ local timer = gears.timer({
 		awful.spawn.easy_async(
 			command,
 			function(stdout, stderr)
-				utils.set_bg(widget, widget.default_bg)
 				local icon = "" ---@type string
 				if stderr:len() > 0 then
 					icon = percentage_icons[1]
-					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. icon .. ' unavailable '))
-					utils.set_bg(widget, crit_color)
+					utils.inject_widget_info(widget, wibox.widget.textbox(icon .. 'unavailable '))
+					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
 					notify("unable to connect to battery")
 					return
 				end
@@ -84,16 +86,16 @@ local timer = gears.timer({
 				icon = percentage_icons[math.ceil(charge / 10) + 1]
 				local status = string.match(stdout, "%a+") ---@type string
 				if status == charging_status then
-					icon = icon .. charging_icon
+					icon = charging_icon .. icon
 				end
 				if charge <= crit_threshold then
 					icon = icon
-					utils.set_bg(widget, crit_color)
+					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
 					notify("low battery percentage (" .. charge .. "%)")
 				else
 					notified = false
 				end
-				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. ' ' .. charge .. '%'))
+				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. charge .. '%'))
 			end
 		)
 	end

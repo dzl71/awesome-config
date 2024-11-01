@@ -16,11 +16,14 @@ local icon = ' '
 ---@type string
 local crit_color = "#ff0000"
 
+---@type string
+local default_color = "#fffaa0"
+
 -- ===========================
 --    creating the widget
 -- ===========================
 
-local widget = utils.widget_base()
+local widget = utils.widget_base(default_color)
 
 local popup = utils.popup_base()
 
@@ -32,10 +35,9 @@ local timer = gears.timer({
 		awful.spawn.easy_async(
 			command,
 			function(out, stderr)
-				utils.set_bg(widget, widget.default_bg)
 				if stderr:len() > 0 then
-					utils.inject_widget_info(widget, wibox.widget.textbox(' ' .. icon .. " N/A "))
-					utils.set_bg(widget, crit_color)
+					utils.inject_widget_info(widget, wibox.widget.textbox(icon .. " N/A "))
+					utils.set_color(widget, {bg = crit_color, fg = "#ffffff"})
 					return
 				end
 				local brightness = tonumber(out)
