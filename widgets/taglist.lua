@@ -68,16 +68,14 @@ local widget_template = {
 	forced_height = forced_size,
 	forced_width = forced_size,
 	{
-		id = "placement",
-		widget = wibox.container.place,
+		id = 'index',
+		widget = wibox.widget.textbox,
 		valign = "center",
-		halign = "center",
-		{
-			id = 'index',
-			widget = wibox.widget.textbox,
-		},
+		align = "center",
 	},
+
 	-- callbaks --
+
 	create_callback = function(self, c3, index, objects)
 		self:get_children_by_id('index')[1].text = index
 		self.tag = awful.tag.find_by_name(awful.screen.focused(), tostring(index))
