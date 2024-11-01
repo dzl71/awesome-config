@@ -4,22 +4,6 @@ local wibox = require("wibox")
 local awful = require("awful")
 local widget_utils = require("widgets.utils")
 
--- ===========================
---    defining variables
--- ===========================
-
----@type string
-local color_odd = "#8a2be2"
-
----@type string
-local color_even = "#7b68ee"
-
----@type number
-local left_margin = 10
-
----@type number
-local right_margin = 30
-
 -- =================================
 --		defining util functios
 -- =================================
@@ -40,7 +24,7 @@ end
 --     defining small widgets presets
 -- ======================================
 
-local keyboard_layout = widget_utils.widget_base()
+local keyboard_layout = widget_utils.widget_base("#f8c8dc")
 widget_utils.inject_widget_info(
 	keyboard_layout,
 	wibox.widget({
@@ -54,37 +38,17 @@ widget_utils.inject_widget_info(
 	})
 )
 
-local date = widget_utils.widget_base()
+local date_and_time = widget_utils.widget_base("#c3b1e1")
 widget_utils.inject_widget_info(
-	date,
-	awful.widget.textclock("󰃱  %d-%m-%Y %a ", 3600)
+	date_and_time,
+	awful.widget.textclock("%T %a %d.%m.%Y", 1)
 )
-
-local time = widget_utils.widget_base()
-widget_utils.inject_widget_info(
-	time,
-	awful.widget.textclock("  %T ", 1)
-)
-
-local layout_box = function(screen)
-	local lbox = widget_utils.widget_base()
-	widget_utils.inject_widget_info(
-		lbox,
-		awful.widget.layoutbox(screen)
-	)
-	widget_utils.widget_init(
-		lbox,
-		color_even,
-		10,
-		10
-	)
-	return lbox
-end
 
 -- ======================
 --		load widgets
 -- ======================
 
+local corner = require("widgets.corner")
 local taglist = require("widgets.taglist").widget
 local wifi = require("widgets.wifi").widget
 local temperature = require("widgets.temperature").widget
@@ -93,72 +57,6 @@ local cpu = require("widgets.cpu").widget
 local volume = require("widgets.volume").widget
 local brightness = require("widgets.brightness").widget
 local battery = require("widgets.battery").widget
-
--- ====================================
---	   setup "always visible" widgets
--- ====================================
-
-widget_utils.widget_init(
-	wifi,
-	color_even,
-	left_margin,
-	right_margin
-)
-
-widget_utils.widget_init(
-	temperature,
-	color_odd,
-	left_margin,
-	right_margin
-)
-widget_utils.widget_init(
-	ram,
-	color_even,
-	left_margin,
-	right_margin
-)
-widget_utils.widget_init(
-	cpu,
-	color_odd,
-	left_margin,
-	right_margin
-)
-widget_utils.widget_init(
-	volume,
-	color_even,
-	left_margin,
-	right_margin
-)
-widget_utils.widget_init(
-	brightness,
-	color_odd,
-	left_margin,
-	right_margin
-)
-widget_utils.widget_init(
-	battery,
-	color_even,
-	left_margin,
-	right_margin
-)
-widget_utils.widget_init(
-	keyboard_layout,
-	color_odd,
-	left_margin,
-	18
-)
-widget_utils.widget_init(
-	date,
-	color_even,
-	left_margin,
-	18
-)
-widget_utils.widget_init(
-	time,
-	color_odd,
-	left_margin,
-	18
-)
 
 -- ==================================
 --		configuring the screen
@@ -194,11 +92,11 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
-		border_width = 13,
+		border_width = 5,
 		position = "top",
 		screen = s,
 		fg = "#ffffff",
-		height = 25,
+		height = 35,
 		bg = "#00000000",
 	})
 
@@ -208,30 +106,39 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Left widgets
 		{
 			layout = wibox.layout.fixed.horizontal,
+			corner.left({ right = -15 }),
 			taglist(s),
+			corner.right({ left = -15 }),
 			wibox.widget.textbox(" "),
 			wibox.widget.systray(),
 		},
 		-- middle widget
 		{
 			layout = wibox.layout.fixed.horizontal,
-			spacing = -20,
-			date,
-			time,
+			{
+				widget = wibox.widget.separator,
+				opacity = 0,
+				visible = true,
+				forced_width = 350,
+			},
+			corner.left({ right = -15 }),
+			date_and_time,
+			corner.right({ left = -15 }),
 		},
 		-- Right widgets
 		{
 			layout = wibox.layout.fixed.horizontal,
-			spacing = -20,
+			spacing = 10,
+			corner.left({ right = -20 }),
 			battery,
-			volume.widget,
-			brightness.widget,
+			volume,
+			brightness,
 			wifi,
 			cpu,
 			ram,
 			temperature,
 			keyboard_layout,
-			layout_box(s),
+			corner.right({ left = -35 }),
 		},
 	})
 end)
