@@ -42,6 +42,7 @@ local timer = gears.timer({
 				end
 				local brightness = tonumber(out)
 				local text = icon .. brightness .. '%'
+				utils.set_color(widget, {fg = default_color })
 				utils.inject_widget_info(widget, wibox.widget.textbox(text))
 				utils.inject_popup_info(popup, brightness, text)
 			end

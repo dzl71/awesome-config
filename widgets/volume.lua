@@ -69,6 +69,7 @@ local timer = gears.timer({
 					icon = sub_icon .. volume_icons[icon_idx]
 				end
 				local text = icon .. volume .. '%'
+				utils.set_color(widget, { fg = default_color })
 				utils.inject_widget_info(widget, wibox.widget.textbox(text))
 				utils.inject_popup_info(popup, volume, text)
 			end

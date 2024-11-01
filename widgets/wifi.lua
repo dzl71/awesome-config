@@ -50,6 +50,7 @@ local timer = gears.timer({
 					signal = 0
 					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
 				end
+				utils.set_color(widget, { fg = default_color })
 				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. signal .. "%"))
 			end
 
