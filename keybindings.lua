@@ -1,5 +1,4 @@
 local awful = require("awful")
-local naughty = require("naughty")
 local gears = require("gears")
 
 -- ======================
@@ -378,10 +377,10 @@ awful.keygrabber({
 	},
 	-- keygrabber keybindings
 	keybindings = {
-		{ {}, 'h', function() awful.tag.incmwfact(-0.00625) end }, -- resize left
+		{ {}, 'h', function() awful.tag.incmwfact(-0.015) end }, -- resize left
 		{ {}, 'j', function() awful.client.incwfact(-0.025) end }, -- decrease height
 		{ {}, 'k', function() awful.client.incwfact(0.025) end }, -- increase height
-		{ {}, 'l', function() awful.tag.incmwfact(0.00625) end }, -- resize right
+		{ {}, 'l', function() awful.tag.incmwfact(0.015) end }, -- resize right
 	},
 	-- had to do this because allowed_keys terminated the keygrabber instantly
 	_allowed_keys = {},
