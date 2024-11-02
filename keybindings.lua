@@ -10,9 +10,6 @@ local gears = require("gears")
 local keyboard_layouts = { "us", "il", "ru" }
 
 ---@type integer
-local default_master_count = 1
-
----@type integer
 local keyboard_layout_current = 1
 
 ---@type integer
