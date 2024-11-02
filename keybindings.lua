@@ -216,37 +216,8 @@ keys.global = gears.table.join(
 		function()
 			volume_change("pamixer --toggle-mute")
 		end
-	),
-
-	-- increase the number of master windows
-
-	awful.key(
-		{ modkey },
-		"=",
-		function()
-			awful.tag.incnmaster(1)
-		end
-	),
-
-	-- decrease the number of master windows
-
-	awful.key(
-		{ modkey },
-		"-",
-		function()
-			awful.tag.incnmaster(-1)
-		end
-	),
-
-	-- set the number of master windows to default
-
-	awful.key(
-		{ modkey },
-		"`",
-		function()
-			awful.screen.focused().selected_tag.master_count = default_master_count
-		end
 	)
+
 )
 
 for i = 1, 10 do
