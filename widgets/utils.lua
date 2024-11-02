@@ -11,7 +11,7 @@ local utils = {}
 function utils.widget_base(default_color)
 	return wibox.widget({
 		widget = wibox.container.background,
-		forced_height = 25,
+		forced_height = 15,
 		fg = default_color
 	})
 end
