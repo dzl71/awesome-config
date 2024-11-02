@@ -410,10 +410,10 @@ awful.keygrabber({
 	},
 	-- keygrabber keybindings
 	keybindings = {
-		{ {}, 'h', function() awful.tag.incmwfact(-0.025) end }, -- resize left
-		{ {}, 'j', function() awful.client.incwfact(-0.05) end }, -- decrease height
-		{ {}, 'k', function() awful.client.incwfact(0.05) end }, -- increase height
-		{ {}, 'l', function() awful.tag.incmwfact(0.025) end }, -- resize right
+		{ {}, 'h', function() awful.tag.incmwfact(-0.00625) end }, -- resize left
+		{ {}, 'j', function() awful.client.incwfact(-0.025) end }, -- decrease height
+		{ {}, 'k', function() awful.client.incwfact(0.025) end }, -- increase height
+		{ {}, 'l', function() awful.tag.incmwfact(0.00625) end }, -- resize right
 	},
 	-- had to do this because allowed_keys terminated the keygrabber instantly
 	_allowed_keys = {},
