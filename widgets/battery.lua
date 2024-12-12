@@ -77,8 +77,8 @@ local timer = gears.timer({
 				local icon = "" ---@type string
 				if stderr:len() > 0 then
 					icon = percentage_icons[1]
-					utils.inject_widget_info(widget, wibox.widget.textbox(icon .. 'unavailable '))
-					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
+					widget:inject_info(wibox.widget.textbox(icon .. 'unavailable '))
+					widget:set_color({ bg = crit_color, fg = "#ffffff" })
 					notify("unable to connect to battery")
 					return
 				end
@@ -90,19 +90,19 @@ local timer = gears.timer({
 				end
 				if charge <= crit_threshold then
 					icon = icon
-					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
+					widget:set_color({ bg = crit_color, fg = "#ffffff" })
 					notify("low battery percentage (" .. charge .. "%)")
 				else
 					notified = false
 				end
-				utils.set_color(widget, { fg = default_color })
-				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. charge .. '%'))
+				widget:set_color({ fg = default_color })
+				widget:inject_info(wibox.widget.textbox(icon .. charge .. '%'))
 			end
 		)
 	end
 })
 
 return {
-	widget = widget,
+	widget = widget(),
 	timer = timer,
 }

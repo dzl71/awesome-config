@@ -50,8 +50,8 @@ local timer = gears.timer({
 			command,
 			function(out, stderr)
 				if stderr:len() > 0 then
-					utils.inject_widget_info(widget, wibox.widget.textbox(mute_icon .. " N/A "))
-					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
+					widget:inject_info(wibox.widget.textbox(mute_icon .. " N/A "))
+					widget:set_color({ bg = crit_color, fg = "#ffffff" })
 					return
 				end
 				local sub_icon = '' ---@type string
@@ -69,17 +69,17 @@ local timer = gears.timer({
 					icon = sub_icon .. volume_icons[icon_idx]
 				end
 				local text = icon .. volume .. '%'
-				utils.set_color(widget, { fg = default_color })
-				utils.inject_widget_info(widget, wibox.widget.textbox(text))
-				utils.inject_popup_info(popup, volume, text)
+				widget:set_color({ fg = default_color })
+				widget:inject_info(wibox.widget.textbox(text))
+				popup:inject_info(volume, text)
 			end
 		)
-		popup.visible = false
+		popup:set_invisible()
 	end
 })
 
 return {
-	widget = widget,
+	widget = widget(),
 	timer = timer,
 	popup = popup,
 }

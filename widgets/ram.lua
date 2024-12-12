@@ -42,7 +42,7 @@ local timer = gears.timer({
 			function(out)
 				local percentage = string.format("%.1f", out) ---@type string
 				if tonumber(percentage) > crit_threshold then
-					utils.set_color(widget, { bg = crit_color, fg = "#ffffff" })
+					widget:set_color({ bg = crit_color, fg = "#ffffff" })
 					if not notified then
 						icon = icon
 						notified = true
@@ -55,14 +55,14 @@ local timer = gears.timer({
 				else
 					notified = false
 				end
-				utils.set_color(widget, { fg = default_color })
-				utils.inject_widget_info(widget, wibox.widget.textbox(icon .. percentage .. "%"))
+				widget:set_color({ fg = default_color })
+				widget:inject_info(wibox.widget.textbox(icon .. percentage .. "%"))
 			end
 		)
 	end
 })
 
 return {
-	widget = widget,
+	widget = widget(),
 	timer = timer,
 }

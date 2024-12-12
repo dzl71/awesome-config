@@ -36,31 +36,23 @@ local timer = gears.timer({
 			command,
 			function(out, stderr)
 				if stderr:len() > 0 then
-					utils.inject_widget_info(widget, wibox.widget.textbox(icon .. " N/A "))
-					utils.set_color(widget, {bg = crit_color, fg = "#ffffff"})
+					widget:inject_info(wibox.widget.textbox(icon .. " N/A "))
+					widget:set_color({bg = crit_color, fg = "#ffffff"})
 					return
 				end
 				local brightness = tonumber(out)
 				local text = icon .. brightness .. '%'
-				utils.set_color(widget, {fg = default_color })
-				utils.inject_widget_info(widget, wibox.widget.textbox(text))
-				utils.inject_popup_info(popup, brightness, text)
+				widget:set_color({fg = default_color })
+				widget:inject_info(wibox.widget.textbox(text))
+				popup:inject_info(brightness, text)
 			end
 		)
-		popup.visible = false
+		popup:set_invisible()
 	end
 })
 
--- stop the timer if it works
-timer:connect_signal(
-	"timeout",
-	function()
-		timer:stop()
-	end
-)
-
 return {
-	widget = widget,
+	widget = widget(),
 	timer = timer,
 	popup = popup,
 }

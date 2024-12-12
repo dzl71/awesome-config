@@ -106,6 +106,7 @@ local widget = function(screen)
 		screen = screen,
 		filter = awful.widget.taglist.filter.all,
 		widget_template = widget_template,
+		-- buttons = taglist_buttons,
 		style = {
 			spacing = 3,
 		},

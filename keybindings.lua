@@ -42,7 +42,7 @@ local function volume_change(command)
 		hold_timeout:start()
 		awful.spawn(command)
 		volume.timer:emit_signal("timeout")
-		volume.popup.visible = true
+		volume.popup:set_visible()
 		volume.timer:again()
 	end
 end
@@ -56,7 +56,7 @@ local function brightness_change(percentage)
 		hold_timeout:start()
 		awful.spawn("brightnessctl set " .. percentage)
 		brightness.timer:emit_signal("timeout")
-		brightness.popup.visible = true
+		brightness.popup:set_visible()
 		brightness.timer:again()
 	end
 end
@@ -377,10 +377,10 @@ awful.keygrabber({
 	},
 	-- keygrabber keybindings
 	keybindings = {
-		{ {}, 'h', function() awful.tag.incmwfact(-0.015) end }, -- resize left
+		{ {}, 'h', function() awful.tag.incmwfact(-0.005) end }, -- resize left
 		{ {}, 'j', function() awful.client.incwfact(-0.025) end }, -- decrease height
 		{ {}, 'k', function() awful.client.incwfact(0.025) end }, -- increase height
-		{ {}, 'l', function() awful.tag.incmwfact(0.015) end }, -- resize right
+		{ {}, 'l', function() awful.tag.incmwfact(0.005) end }, -- resize right
 	},
 	-- had to do this because allowed_keys terminated the keygrabber instantly
 	_allowed_keys = {},

@@ -25,8 +25,7 @@ end
 -- ======================================
 
 local keyboard_layout = widget_utils.widget_base("#f8c8dc")
-widget_utils.inject_widget_info(
-	keyboard_layout,
+keyboard_layout:inject_info(
 	wibox.widget({
 		layout = wibox.layout.fixed.horizontal,
 		{
@@ -39,9 +38,7 @@ widget_utils.inject_widget_info(
 )
 
 local date_and_time = widget_utils.widget_base("#c3b1e1")
-widget_utils.inject_widget_info(
-	date_and_time,
-	awful.widget.textclock("%T %a %d.%m.%Y", 1)
+date_and_time:inject_info(awful.widget.textclock("%T %a %d.%m.%Y", 1)
 )
 
 -- ======================
@@ -122,7 +119,7 @@ awful.screen.connect_for_each_screen(function(s)
 				forced_width = 350,
 			},
 			corner.left({ right = -15 }),
-			date_and_time,
+			date_and_time(),
 			corner.right({ left = -15 }),
 		},
 		-- Right widgets
@@ -137,7 +134,7 @@ awful.screen.connect_for_each_screen(function(s)
 			cpu,
 			ram,
 			temperature,
-			keyboard_layout,
+			keyboard_layout(),
 			corner.right({ left = -35 }),
 		},
 	})
